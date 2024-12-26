@@ -35,6 +35,27 @@ class HashMap {
 
         this.size++;
     }
+
+    resize() {
+        
+        const newBuckets = new Array(this.buckets.length * 2); //create new bucket with new size
+
+        this.buckets.forEach(bucket => {
+            if(bucket){
+                bucket.forEach(([key,value])=>{
+                    const newIndex =this.hash(key) % newBuckets.length; //assign new hashcode for new bucket size
+                    
+                    if(!newBuckets[newIndex]){
+                        newBuckets[newIndex] = [];
+                    }
+
+                    newBuckets[newIndex].push([key,value]);
+                })
+            }
+        })
+
+        this.buckets = newBuckets
+    }
 }
 
 const test = new HashMap();
