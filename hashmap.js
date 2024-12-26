@@ -34,6 +34,11 @@ class HashMap {
         }
 
         this.size++;
+
+        const loadFactor = this.size/this.buckets.length;
+        if (loadFactor > 0.75){
+            this.resize();
+        }
     }
 
     resize() {
