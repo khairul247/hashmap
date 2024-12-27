@@ -25,7 +25,7 @@ class HashMap {
             this.buckets[index] = [];
         }
 
-        const existing = this.buckets[index].find(pair => pair[0] === value);
+        const existing = this.buckets[index].find(pair => pair[0] === key);
 
         if (existing){//update the new value 
             existing[1]=value;
@@ -60,6 +60,15 @@ class HashMap {
         })
 
         this.buckets = newBuckets
+    }
+
+    get(key){
+        const index = this.hash(key);
+        if(!this.buckets[index]) return null;
+        
+        const checkBucket = this.buckets[index];
+        const existingPair = checkBucket.find(pair => pair[0] === key);
+        return existingPair ? exisitingPair[1] : null;
     }
 }
 
