@@ -68,8 +68,36 @@ class HashMap {
         
         const checkBucket = this.buckets[index];
         const existingPair = checkBucket.find(pair => pair[0] === key);
-        return existingPair ? exisitingPair[1] : null;
+        return existingPair ? existingPair[1] : null;
     }
+
+    has(key) {
+        const index = this.hash(key);
+        if(!this.buckets[index]) return false;
+
+        const checkBucket = this.buckets[index];
+        const existingKey = checkBucket.find(pair => pair[0] === key);
+        return existingKey ? true : false;
+    }
+
+    remove(key) {
+        if(!this.has(key)) return false;
+
+        const index = this.hash(key);
+        const checkBucket = this.buckets[index];
+
+        const elementIndex = checkBucket.findIndex(checkKey);
+        checkBucket.splice(elementIndex,1);
+
+        this.size--
+
+        return true;
+
+        function checkKey(pair) {
+            return pair[0] === key;
+        }
+    }
+
 }
 
 const test = new HashMap();
