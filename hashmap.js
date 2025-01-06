@@ -98,6 +98,15 @@ class HashMap {
         }
     }
 
+    length() {
+        return this.size;
+    }
+
+    clear() {
+        this.buckets = new Array(initialCapacity);
+        this.size = 0;
+    }
+
 }
 
 const test = new HashMap();
