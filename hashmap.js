@@ -2,6 +2,7 @@ class HashMap {
     constructor(initialCapacity = 16, loadFactor = 0.75) {
         this.buckets = new Array(initialCapacity);
         this.loadFactor = loadFactor;
+        this.initialCapacity = initialCapacity;
         this.capacity = initialCapacity;
         this.size = 0;
     }
@@ -19,7 +20,6 @@ class HashMap {
 
     set(key, value) {
         const index = this.hash(key);
-        console.log(index);
 
         if (!this.buckets[index]){
             this.buckets[index] = [];
@@ -31,9 +31,9 @@ class HashMap {
             existing[1]=value;
         } else {
             this.buckets[index].push([key,value]);
+            this.size++;
         }
 
-        this.size++;
 
         const loadFactor = this.size/this.buckets.length;
         if (loadFactor > 0.75){
@@ -44,11 +44,12 @@ class HashMap {
     resize() {
         
         const newBuckets = new Array(this.buckets.length * 2); //create new bucket with new size
+        this.capacity = newBuckets.length;
 
         this.buckets.forEach(bucket => {
             if(bucket){
                 bucket.forEach(([key,value])=>{
-                    const newIndex =this.hash(key) % newBuckets.length; //assign new hashcode for new bucket size
+                    const newIndex =this.hash(key) //assign new hashcode for new bucket size
                     
                     if(!newBuckets[newIndex]){
                         newBuckets[newIndex] = [];
@@ -103,13 +104,102 @@ class HashMap {
     }
 
     clear() {
-        this.buckets = new Array(initialCapacity);
+        this.capacity = this.initialCapacity;
+        this.buckets = new Array(this.capacity);
         this.size = 0;
+
+    }
+
+    keys() {
+
+        const keyList = [];
+        for (let bucket of this.buckets){
+            if (bucket){
+                for (let pair of bucket){
+                    keyList.push(pair[0]);
+                }
+            }
+        }
+
+        return keyList;
+    }
+
+    values() {
+
+        const valueList = [];
+        for (let bucket of this.buckets){
+            if (bucket){
+                for (let pair of bucket){
+                    valueList.push(pair[1]);
+                }
+            }
+        }
+
+        return valueList;
+    }
+
+    entries() {
+
+        const entryList = [];
+        for (let bucket of this.buckets){
+            if(bucket){
+                for (let pair of bucket){
+                    entryList.push(pair);
+                }
+            }
+        }
+
+        return entryList;
     }
 
 }
 
-const test = new HashMap();
-test.set('apple', 'red');
-test.set('banana', 'yellow');
-console.log(test.buckets);  // Check if the key-value pairs are added
+
+// const test = new HashMap();
+
+// test.set('apple', 'red')
+// test.set('banana', 'yellow')
+// test.set('carrot', 'orange')
+// test.set('dog', 'brown')
+// test.set('elephant', 'gray')
+// test.set('frog', 'green')
+// test.set('grape', 'purple')
+// test.set('hat', 'black')
+// test.set('ice cream', 'white')
+// test.set('jacket', 'blue')
+// test.set('kite', 'pink')
+// test.set('lion', 'golden')
+
+// console.log(test.entries())
+// console.log(test.keys())
+// console.log(test.values())
+// console.log(test.length())
+// console.log(test.capacity)
+
+// test.set('moon', 'silver')
+
+// console.log(test.length())
+// console.log(test.capacity)
+
+// test.clear()
+
+// console.log(test.entries())
+// console.log(test.keys())
+// console.log(test.values())
+// console.log(test.length())
+
+// test.set('elephant', 'gray')
+// test.set('frog', 'green')
+// test.set('grape', 'purple')
+// test.set('hat', 'black')
+// test.set('ice cream', 'white')
+// test.set('jacket', 'blue')
+// test.set('kite', 'pink')
+// test.set('lion', 'golden')
+
+// console.log(test.capacity)
+// console.log(test.get("jacket"))
+// console.log(test.remove("jacket"))
+// console.log(test.values("ice cream"))
+// console.log(test.length())
+// console.log(test.entries())
